@@ -107,8 +107,9 @@ procedure next_day (var dt : date_t);
         begin
             if (year mod 4 = 0) then
                 begin
+                    retur := True;
                     if ((year mod 100 = 0) and (year mod 400 <> 0)) then
-                        retur := True;
+                        retur := False;
                 end
             else
                 retur := False;
@@ -132,15 +133,20 @@ procedure next_day (var dt : date_t);
     begin
         is_leap := leap_year(dt.year);
 
-        if((dt.day = month_length(dt.month, is_leap)) and (dt.month = 12)) then
-            dt.day := 1;
-            dt.month := 1;
-            dt.year := dt.year + 1;
-        if((dt.day = month_length(dt.month, is_leap)) and (dt.month <> 12)) then
+        if(dt.day = month_length(dt.month, is_leap)) then
             begin
-                dt.day := 1;
-                dt.month := dt.month + 1;
-            end
+                if dt.month = 12 then 
+                    begin
+                        dt.day := 1;
+                        dt.month := 1;
+                        dt.year := dt.year + 1;
+                    end
+                else
+                    begin
+                        dt.day := 1;
+                        dt.month := dt.month + 1;
+                    end;
+                end
         else
             dt.day := dt.day + 1;
     end;
@@ -154,21 +160,63 @@ begin
     init_date1(d1);
     init_date(d2, 30, 12, 1999);
     init_date(d3, 1, 1, 2000);
-
+    
     format_date(d1, format_str);
     writeln('d1: ' + format_str);
     format_date(d2, format_str);
     writeln('d2: ' + format_str);
     format_date(d3, format_str);
     writeln('d3: ' + format_str);
-
+    writeln('');
+    
     writeln('d1 < d2? ', date_less_than(d1,d2));
     writeln('d2 < d3? ', date_less_than(d2,d3));
-
+    writeln('');
+    
     next_day(d2);
     format_date(d2, format_str);
     writeln('next day d2: ', format_str);
+    writeln('d2 < d3? ', date_less_than(d2,d3));
+    writeln('d2 = d3? ', date_equal(d2,d3));
+    writeln('d2 > d3? ', date_less_than(d3,d2));
+    writeln('');
     
-
+    next_day(d2);
+    format_date(d2, format_str);
+    writeln('next day d2: ', format_str);
+    writeln('d2 = d3? ', date_equal(d2,d3));
+    writeln('');
+    
+    init_date(d1, 28, 2, 1529);
+    format_date(d1, format_str);
+    writeln('Initialized d1 to ', format_str);
+    next_day(d1);
+    format_date(d1, format_str);
+    writeln('next day d1: ', format_str);
+    writeln('');
+    
+    init_date(d1, 28, 2, 1460);
+    format_date(d1, format_str);
+    writeln('Initialized d1 to ', format_str);
+    next_day(d1);
+    format_date(d1, format_str);
+    writeln('next day d1: ', format_str);
+    writeln('');
+    
+    init_date(d1, 28, 2, 1700);
+    format_date(d1, format_str);
+    writeln('Initialized d1 to ', format_str);
+    next_day(d1);
+    format_date(d1, format_str);
+    writeln('next day d1: ', format_str);
+    writeln('');
+    
+    init_date(d1, 28, 2, 1600);
+    format_date(d1, format_str);
+    writeln('Initialized d1 to ', format_str);
+    next_day(d1);
+    format_date(d1, format_str);
+    writeln('next day d1: ', format_str);
+    writeln('');
 
 end.
