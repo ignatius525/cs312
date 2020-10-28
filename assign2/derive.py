@@ -1,22 +1,30 @@
-import sys, string, argparse
+import sys, string
 from optparse import OptionParser
 string = ''
-
-
+derive = False
+length = 3
 full_args = sys.argv
-
+#print(full_args)
 arg_list = full_args[1:]
-
+#print(arg_list)
 parser = OptionParser()
 
-parser.add_option("-l", type = "int", dest = "length")
-parser.add_option("-d", action = "store_true", dest = "derive")
-parser.add_option("-f", dest = "filename")
-(options, args) = parser.parse_args()
+for f in range(len(arg_list)):
+    if arg_list[f][-3:] == "txt":
+        filename = arg_list[f]
+    if arg_list[f][:2] == "-l":
+        length = int(arg_list[f][-1])
+    if arg_list[f][:2] == "-d":
+        derive = True
+
+#parser.add_option("-l", type = "int", dest = "length")
+#parser.add_option("-d", action = "store_true", dest = "derive")
+#parser.add_option("-f", dest = "filename")
+#(options, args) = parser.parse_args()
 
 
 
-for line in open(options.filename, 'r'):
+for line in open(filename, 'r'):
     string += line
     
 lst = string.split('\n')
@@ -52,22 +60,24 @@ derivlist.append(init)
 worklist = []
 worklist.append([init,derivlist])
 
+
+
 total_str = 0
 while len(worklist) != 0:
     t = (worklist.pop(0))
     foo = t[0].split()
-    print(foo)
+    #print(foo)
    
-    if len(foo) > options.length:
+    if len(foo) > length:
         continue
-    if len(foo) == options.length:
+    if len(foo) == length:
         count = 0 
         for k in range(len(foo)):
             if foo[k] not in dc:
                 count +=1
         if count == len(foo):
             total_str += 1
-            if(options.derive == True):
+            if(derive == True):
                 print(init + " " + character + " " + t[1][1] + ' \n')
                 for f in range(2 , len(t[1])):
                     for x in range(len(init)):
